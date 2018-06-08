@@ -1,0 +1,18 @@
+<header>
+    <h1>Results</h1>
+    <h2>{{ test.test_name }}</h2>
+</header>
+
+<ul>
+{% for q,a,r in result %}
+    <li>
+    <p>{{ q }}</p>
+    <p>{{ a }}</p>
+    <p>{{ r }}</p>
+    </li>
+{% endfor %}
+</ul>
+<p>{{ points }}</p>
+
+
+
