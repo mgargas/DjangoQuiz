@@ -1,15 +1,21 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse, Http404
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views import generic
+
 from .models import *
-from django.shortcuts import render, get_object_or_404
 
 
-def index(request):
-    latest_test_list = Test.objects.all()[:4]
-    context = {'latest_tests_list': latest_test_list}
-    return render(request, 'quiz/index.html', context)
+class IndexView(generic.ListView):
+    template_name = 'quiz/index.html'
+    context_object_name = 'latest_test_list'
+
+    def get_queryset(self):
+        """"Return the last five tests"""
+        return Test.objects.all()[:4]
 
 
 def detail(request, test_id):
@@ -27,4 +33,14 @@ def results(request, test_id):
     points = sum(1 if a.is_correct else 0 for a in participant_answers)
     context = {'test': test, 'result': result, 'points': points}
     return render(request, 'quiz/results.html', context)
+
+
+def answer_the_question(request, test_id, question_id):
+    ide = int(request.POST['answer'])
+    answer = get_object_or_404(Answer, id=ide)
+    test_participant_answer = get_object_or_404(TestParticipantAnswers, test_participant=1, test=test_id,
+                                                question=question_id)
+    test_participant_answer.answer = answer
+    test_participant_answer.save()
+    return HttpResponseRedirect(reverse('quiz:detail', args=(test_id,)))
 

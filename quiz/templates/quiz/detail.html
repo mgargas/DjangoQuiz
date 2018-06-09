@@ -2,11 +2,14 @@
 <ul>
 {% for question in questions %}
     <p align="center">{{ question.question_text }}</p>
-    {% csrf_token %}
+    <form action="{% url 'quiz:answer_the_question' test.id question.id%}" method="post">
+        {% csrf_token %}
     {% for answer in question.answer_set.all %}
         <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}" />
         <label for="answer{{ forloop.counter }}">{{ answer.answer_text }}</label><br />
     {% endfor %}
+    <input type="submit" value="Answer" />
+    </form>
 {% endfor %}
 </ul>
 <li><a href="{% url 'quiz:results'  test_id=test.id %}">{{ "RESULTS" }}</a></li>
