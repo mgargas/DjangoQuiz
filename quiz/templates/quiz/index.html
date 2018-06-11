@@ -1,16 +1,28 @@
-<!--{% load static %}
+{% extends "base.html" %}
+{% block content %}
+            <header>
+                <h1>Welcome {{ user.get_username }}</h1>
 
-<link rel="stylesheet" type="text/css" href="{% static 'quiz/style.css' %}" />
--->
-<header>
-    <h1>Tests</h1>
-</header>
-{% if latest_tests_list %}
-    <ul>
-    {% for test in latest_tests_list %}
-        <li><a href="{% url 'quiz:detail' test.id %}">{{ test.test_name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No tests are available.</p>
-{% endif %}
+            </header>
+            <section>
+                <div id="container_demo" >
+                    <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                    <a class="hiddenanchor" id="toregister"></a>
+                    <a class="hiddenanchor" id="tologin"></a>
+                    <div id="wrapper">
+                        <div id="login" class="animate form">
+                            {% if latest_tests_list %}
+                                <h1>Available tests</h1>
+                                {% for test in latest_tests_list %}
+                                    <form action="{% url 'quiz:detail' test.id %}">
+                                        <input type="submit" value="{{ test.test_name }}" />
+                                    </form>
+                                {% endfor %}
+                            {% else %}
+                                <p align="center">Sorry, but we don't have any tests now.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+{% endblock%}
