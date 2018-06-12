@@ -10,12 +10,19 @@
                             <h1>{{ test.test_name }}</h1>
                             {% if questions %}
                                 <p>Number of questions: {{ questions.all.count }}</p>
-                                <p>TestParticipantId: {{ test_participant.test.id }}</p>
+                                {% if result or result == 0 %}
+                                    <p>You latest result: {{ result }}</p>
+                                {% else %}
+                                    <p>You latest result: You have not solve this quiz yet</p>
+                                {% endif %}
                                 <form action="{% url 'quiz:question' test.id test.question_set.first.id%}">
                                     <input type="submit" value="Start Quiz" />
                                 </form>
                             {% else %}
                                 <p>No questions are available.</p>
+                                <form action="{% url 'quiz:index' %}">
+                                    <input type="submit" value="MAIN PAGE" />
+                                </form>
                             {% endif %}
                         </div>
                     </div>

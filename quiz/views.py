@@ -55,8 +55,15 @@ def detail(request, test_id):
         test_participant = TestParticipant(test=test, user=request.user)
     finally:
         test_participant.save()
+        participant_answers = \
+            [record.answer for record in
+             TestParticipantAnswers.objects.filter(test=test, test_participant=test_participant).order_by(
+                 'question_id')]
+        result = None
+        if participant_answers:
+            result = sum(1 if a.is_correct else 0 for a in participant_answers)
         return render(request, 'quiz/detail.html',
-                      {'test': test, 'questions': questions, 'test_participant': test_participant})
+                      {'test': test, 'questions': questions, 'test_participant': test_participant, 'result': result})
 
 
 @login_required
