@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+    <h1>{{ user.get_username }}</h1>
+
+</header>
+<section>
+    <div id="container_demo" >
+        <div id="wrapper">
+            <div id="login" class="animate form">
+                <h1>Question {{ question_number }}</h1>
+                <form action="{% url 'quiz:answer_the_question' test.id question.id %}" method="post">
+                    <label for="usernamesignup" class="uname" >{{ question.question_text }}</label>
+                    {% csrf_token %}
+                    {% for answer in question.answer_set.all %}
+                        <p>
+                            <input id="answer{{  forloop.counter }}"  name="answer" required="required" type="submit" value="{{ answer.answer_text }}">
+                        </p>
+                    {% endfor %}
+                </form>
+                {% if next_question %}
+                    <p class="change_link">
+                        <a href="{% url 'quiz:question' test.id next_question.id %}" class="to_register"> Next question </a>
+                    </p>
+                {% else %}
+                    <p class="change_link">
+                        <a href="{% url 'quiz:results' test.id %}" class="to_register"> Results </a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,20 +1,24 @@
-{% if test %}
-    <h1>{{ test.test_name }}</h1>
-    <ul>
-    {% for question in questions %}
-        <p align="center">{{ question.question_text }}</p>
-        <form action="{% url 'quiz:answer_the_question' test.id question.id%}" method="post">
-            {% csrf_token %}
-        {% for answer in question.answer_set.all %}
-            <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}" />
-            <label for="answer{{ forloop.counter }}">{{ answer.answer_text }}</label><br />
-        {% endfor %}
-        <input type="submit" value="Answer" />
-        </form>
-    {% endfor %}
-    </ul>
-    <li><a href="{% url 'quiz:results'  test_id=test.id %}">{{ "RESULTS" }}</a></li>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-{% else %}
-    <p>No questions are available.</p>
-{% endif %}
+{% extends "base.html" %}
+{% block content %}
+            <header>
+                <h1>{{ user.get_username }}</h1>
+            </header>
+            <section>
+                <div id="container_demo" >
+                    <div id="wrapper">
+                        <div id="login" class="animate form">
+                            <h1>{{ test.test_name }}</h1>
+                            {% if questions %}
+                                <p>Number of questions: {{ questions.all.count }}</p>
+                                <p>TestParticipantId: {{ test_participant.test.id }}</p>
+                                <form action="{% url 'quiz:question' test.id test.question_set.first.id%}">
+                                    <input type="submit" value="Start Quiz" />
+                                </form>
+                            {% else %}
+                                <p>No questions are available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+{% endblock%}

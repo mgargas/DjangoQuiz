@@ -1,18 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
 <header>
-    <h1>Results</h1>
-    <h2>{{ test.test_name }}</h2>
+    <h1>{{ user.get_username }}</h1>
+
 </header>
+<section>
+    <div id="container_demo" >
+        <div id="wrapper">
+            <div id="login" class="animate form">
+                <h1>{{test.test_name}} - results</h1>
 
-<ul>
-{% for q,a,r in result %}
-    <li>
-    <p>{{ q }}</p>
-    <p>{{ a }}</p>
-    <p>{{ r }}</p>
-    </li>
-{% endfor %}
-</ul>
-<p>{{ points }}</p>
-
-
-
+                {% for q,a,r in result %}
+                    <p class="container">{{ forloop.counter}}. {{ q }}</p>
+                    <p>Your answer: {{ a }}</p>
+                    <p>Result: {{ r }}</p>
+                        <p></p>
+                {% endfor %}
+                <p align="center">Sum: {{ points }}</p>
+                <form action="{% url 'quiz:index' %}">
+                    <input type="submit" value="MAIN PAGE" />
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
