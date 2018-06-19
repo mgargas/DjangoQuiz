@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+    <h1>{{ user.get_username }}</h1>
+
+</header>
+<section>
+    <div id="container_demo" >
+        <div id="wrapper">
+            <div id="login" class="animate form">
+                <h1>Leaderboard</h1>
+
+                {% for test_name, participants_with_results in test_with_participants %}
+                    <p class="container" style="font-size: large">{{ test_name }}</p>
+                     <table width="100%">
+                      <tr>
+                        <th>Rank</th>
+                        <th>Login</th>
+                        <th>Result</th>
+                      </tr>
+                         {% for participant, result in participants_with_results %}
+                            <tr>
+                            <th>{{ forloop.counter }}</th>
+                            <th>{{participant}}</th>
+                            <th>{{result}}</th>
+                            </tr>
+                         {% endfor %}
+                    </table>
+                        <p></p>
+                {% endfor %}
+                <form action="{% url 'quiz:index' %}">
+                    <input type="submit" value="MAIN PAGE" />
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

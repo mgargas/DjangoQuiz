@@ -15,6 +15,16 @@
                                         <input type="submit" value="{{ test.test_name }}" />
                                     </form>
                                 {% endfor %}
+                                <p></p>
+                                <form action="{% url 'quiz:leaderboard' %}">
+                                    {{ form.as_p }}
+                                      <p class="next_question button">
+                                        <input type="submit" value="Leaderboard"/>
+                                    </p>
+                                  </form>
+                                <p class="change_link">
+                                    <a href="{% url 'logout' %}" class="to_register"> Log out </a>
+                                </p>
                             {% else %}
                                 <p align="center">Sorry, but we don't have any tests now.</p>
                             {% endif %}

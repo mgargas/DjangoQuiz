@@ -99,3 +99,27 @@ def answer_the_question(request, test_id, question_id):
     finally:
         test_participant_answer.save()
         return HttpResponseRedirect(reverse('quiz:question', args=(test_id, question_id)))
+
+
+@login_required
+def leaderboard(request):
+    tests = [test for test in Test.objects.all()]
+
+    def get_user_test_result(user, test):
+        test_participant = TestParticipant.objects.get(test=test, user=user)
+        participant_answers = \
+            [record.answer for record in
+             TestParticipantAnswers.objects.filter(test=test, test_participant=test_participant)]
+        result = None
+        if participant_answers:
+            result = sum(1 if a.is_correct else 0 for a in participant_answers)
+        return result
+
+    tests_with_participants = [(test.test_name, sorted([(test_participant.user.username, get_user_test_result(test_participant.user, test))
+                                                 for test_participant
+                                                 in TestParticipant.objects.filter(test_id=test.id)],
+                                                       key=lambda element: (element[1] is not None, element[1]), reverse=True))
+                                for test in Test.objects.all()]
+    return render(request, 'quiz/leaderboard.html', {'test_with_participants': tests_with_participants})
+
+

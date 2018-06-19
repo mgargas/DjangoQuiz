@@ -11,6 +11,7 @@ urlpatterns = [
     path('<int:test_id>/', views.detail, name='detail'),
     # ex: /quiz/5/results/
     path('<int:test_id>/results/', views.results, name='results'),
+    path('leaderboard', views.leaderboard, name='leaderboard'),
 ]
 
 

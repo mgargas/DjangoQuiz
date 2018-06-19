@@ -44,4 +44,3 @@ class TestParticipantAnswers(models.Model):
     def __str__(self):
         return self.test_participant.__str__() + self.test_participant.__str__() \
                + self.question.__str__() + self.answer.__str__()
-
