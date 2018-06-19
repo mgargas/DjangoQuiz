@@ -4477,3 +4477,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	-o-animation-name: scaleIn;
 	animation-name: scaleIn;
 }
+
+.answerRow {
+	flex-direction: row;
+	display: flex;
+	margin-bottom: 8px;
+}
+.answerRow input {
+	flex: 0
+}
+
+
+.answerRow label {
+	flex: 4;
+	margin-top: 4px;
+}
+
+.answerRow input[type="radio"]:checked+label{ font-weight: bold; font-size: 40px; cursor: default}
+.answerRow input[type="radio"] { visibility: hidden }
+.answerRow input[type="radio"]+label { cursor: move }

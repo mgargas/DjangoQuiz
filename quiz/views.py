@@ -83,8 +83,7 @@ def results(request, test_id):
 
 @login_required
 def answer_the_question(request, test_id, question_id):
-    ide = Answer.objects.get(answer_text=request.POST.get('answer')).id
-    answer = get_object_or_404(Answer, id=ide)
+    answer = Answer.objects.get(pk=request.POST.get('answer'))
     test = get_object_or_404(Test, pk=test_id)
     participant_id = TestParticipant.objects.get(test=test, user=request.user).id
     try:
@@ -93,10 +92,10 @@ def answer_the_question(request, test_id, question_id):
         test_participant_answer.answer = answer
     except ObjectDoesNotExist:
         test_participant_answer = TestParticipantAnswers(test_participant=get_object_or_404(TestParticipant, id=participant_id),
-                                                         test=get_object_or_404(Test, id=test_id),
+                                                         test=test,
                                                          question=get_object_or_404(Question, id=question_id),
 
-                                                         answer=get_object_or_404(Answer, id=ide))
+                                                         answer=answer)
     finally:
         test_participant_answer.save()
         return HttpResponseRedirect(reverse('quiz:question', args=(test_id, question_id)))

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<header>
+<header xmlns="http://www.w3.org/1999/html">
     <h1>{{ user.get_username }}</h1>
 
 </header>
@@ -14,10 +14,13 @@
                     <label for="usernamesignup" class="uname" >{{ question.question_text }}</label>
                     {% csrf_token %}
                     {% for answer in question.answer_set.all %}
-                        <p>
-                            <input id="answer{{  forloop.counter }}"  name="answer" required="required" type="submit" value="{{ answer.answer_text }}">
-                        </p>
+                        <div class="answerRow">
+                            <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}">
+                            <label for="answer{{ forloop.counter }}">{{ answer.answer_text }}</label>
+                            </input>
+                        </div>
                     {% endfor %}
+                     <input type="submit" value="Vote" />
                 </form>
                 {% if next_question %}
                     <p class="change_link">
@@ -33,3 +36,6 @@
     </div>
 </section>
 {% endblock %}
+
+
+
